@@ -3,7 +3,7 @@ using SampleApp.Core.Models.Internal;
 
 namespace SampleApp.Core.Models.Response
 {
-    public class UserResponseModel
+    public class ClientResponseModel
     {
         public string Name { get; set; }
         

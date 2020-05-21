@@ -5,7 +5,7 @@ using System.Text;
 
 namespace SampleApp.Core.Models.Request
 {
-    public class UserUpdateRequestModel
+    public class ClientUpdateRequestModel
     {
         public int? Age { get; set; }
         public GenderType? Gender { get; set; }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SampleApp.Core.Models.Request
 {
-    public class UserCreateRequestModel
+    public class ClientCreateRequestModel
     {
         [Required]
         [MinLength(2)]
