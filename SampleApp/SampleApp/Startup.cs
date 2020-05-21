@@ -38,13 +38,13 @@ namespace SampleApp
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var context = app.ApplicationServices.GetService<AccountContext>();
+            // AddTestData(context);
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-
-            var context = app.ApplicationServices.GetService<AccountContext>();
-           // AddTestData(context);
 
             app.UseHttpsRedirection();
 
