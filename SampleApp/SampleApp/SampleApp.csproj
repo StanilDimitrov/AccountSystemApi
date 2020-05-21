@@ -12,5 +12,10 @@
     </PackageReference>
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SampleApp.Controllers\SampleApp.Controllers.csproj" />
+    <ProjectReference Include="..\SampleApp.Core\SampleApp.Core.csproj" />
+  </ItemGroup>
+
 
 </Project>
