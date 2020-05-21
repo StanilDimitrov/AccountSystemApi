@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using SampleApp.Core.Dal;
 using SampleApp.Core.Dal.Contracts;
+using SampleApp.Core.Data;
 using System.Reflection;
 
 namespace SampleApp
@@ -22,7 +24,8 @@ namespace SampleApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            //services.AddControllers();
+            services.AddDbContext<AccountContext>(opt => opt.UseInMemoryDatabase("AccountsList"));
+
             var assembly = Assembly.Load("SampleApp.Controllers");
 
             services.AddControllers()
@@ -39,6 +42,9 @@ namespace SampleApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            var context = app.ApplicationServices.GetService<AccountContext>();
+           // AddTestData(context);
 
             app.UseHttpsRedirection();
 
