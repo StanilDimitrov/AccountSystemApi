@@ -1,4 +1,5 @@
 ﻿using SampleApp.Core.Enums;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace SampleApp.Core.Entities
@@ -18,6 +19,6 @@ namespace SampleApp.Core.Entities
 
         public GenderType? Gender { get; set; }
 
-        public Account Account { get; set; }
+        public ICollection<Account> Accounts { get; set; }
     }
 }

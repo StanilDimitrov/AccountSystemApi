@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SampleApp.Core.Data.EntityConfigurations;
 using SampleApp.Core.Entities;
 
 namespace SampleApp.Core.Data
@@ -17,8 +16,7 @@ namespace SampleApp.Core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ClientsConfig());
-            //modelBuilder.Seed();
+            modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
     }

@@ -1,5 +1,6 @@
 ﻿using SampleApp.Core.Enums;
 using SampleApp.Core.Models.Internal;
+using System.Collections.Generic;
 
 namespace SampleApp.Core.Models.Response
 {
@@ -11,6 +12,6 @@ namespace SampleApp.Core.Models.Response
 
         public GenderType? Gender { get; set; }
 
-        public AccountDetailsModel AccountDetails { get; set; }
+        public ICollection<AccountDetailsModel> Accounts { get; set; }
     }
 }

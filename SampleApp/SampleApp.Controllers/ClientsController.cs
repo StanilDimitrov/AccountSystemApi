@@ -41,7 +41,12 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
-             await _userService.UpdateClientAsync(id,request, cancellationToken);
+            if (!request.Age.HasValue && !request.Gender.HasValue)
+            {
+                return BadRequest("Input parameters are not valid");
+            }
+
+             await _userService.UpdateClientAsync(id, request, cancellationToken);
 
             return Ok();
         }
