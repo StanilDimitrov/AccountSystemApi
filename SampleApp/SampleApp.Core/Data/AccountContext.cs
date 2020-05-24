@@ -6,6 +6,11 @@ namespace SampleApp.Core.Data
 {
     public class AccountContext: DbContext
     {
+        public AccountContext(DbContextOptions options) : base(options)
+        {
+
+        }
+
         public DbSet<Client> Clients { get; set; }
 
         public DbSet<Account> Accounts { get; set; }
@@ -13,6 +18,7 @@ namespace SampleApp.Core.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfiguration(new ClientsConfig());
+            //modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
     }

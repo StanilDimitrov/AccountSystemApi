@@ -24,23 +24,21 @@ namespace SampleApp
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AccountContext>(opt => opt.UseInMemoryDatabase("AccountsList"));
+            services.AddDbContext<AccountContext>(options =>
+                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
 
             var assembly = Assembly.Load("SampleApp.Controllers");
 
             services.AddControllers()
                 .PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
 
-            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IAccountService, AccountService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            var context = app.ApplicationServices.GetService<AccountContext>();
-            // AddTestData(context);
-
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

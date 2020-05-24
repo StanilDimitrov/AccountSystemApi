@@ -16,9 +16,9 @@ namespace SampleApp.Controllers
     public class ClientsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IUserService _userService;
+        private readonly IClientService _userService;
 
-        public ClientsController(ILogger<ClientsController> logger, IUserService userService)
+        public ClientsController(ILogger<ClientsController> logger, IClientService userService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _userService = userService ?? throw new ArgumentNullException(nameof(userService));

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SampleApp.Core.Dal.Contracts
 {
-    public interface IUserService
+    public interface IClientService
     {
         Task<int> CreateCleintAsync(ClientCreateRequestModel request, CancellationToken cancellationToken);
 
