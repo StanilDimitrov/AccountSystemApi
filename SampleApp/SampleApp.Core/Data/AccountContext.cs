@@ -16,7 +16,7 @@ namespace SampleApp.Core.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Seed();
+            //modelBuilder.Seed();
             base.OnModelCreating(modelBuilder);
         }
     }

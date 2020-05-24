@@ -63,41 +63,56 @@ namespace SampleApp.Core.Dal
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = await GetClientAsync(clientId, cancellationToken);
+            var clientWithAccountsModel = await _context.Clients
+                .Where(cl => cl.ClientId == clientId)
+                .Include(cl => cl.Accounts)
+                .Select(cl => new ClientResponseModel
+                {
+                    Name = cl.Name,
+                    Age = cl.Age,
+                    Gender = cl.Gender,
+                    Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
+                    {
+                        Sum = ac.Sum,
+                        AccountType = ac.AccountType
+                    }).ToList()
+                }).SingleOrDefaultAsync(cancellationToken);
 
-            var clientAcounts = await _context.Accounts
-                                    .Include(cl => cl.Client)
-                                    .Where(cl => cl.ClientId == clientId)
-                                    .Select(ca => new AccountDetailsModel
-                                    {
-                                        Sum = ca.Sum,
-                                        AccountType = ca.AccountType
-                                    })
-                                    .ToListAsync(cancellationToken);
-            if (client == null)
-            {
-                throw new ArgumentNullException();
-            }
-
-            var response = new ClientResponseModel
-            {
-                Name = client.Name,
-                Age = client.Age,
-                Gender = client.Gender,
-                Accounts = clientAcounts
-            };
-
-            return response;
+            return clientWithAccountsModel;
         }
 
-        public Task<QueryResult<ClientResponseModel>> GetClientGridAsync(string name, int? age, CancellationToken cancellationToken)
+        public async Task<QueryResult<ClientResponseModel>> GetClientGridAsync(string name, int? age, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var clientsQuery = _context.Clients
+                .Include(cl => cl.Accounts)
+                .Select(cl => new ClientResponseModel
+                {
+                    Name = cl.Name,
+                    Age = cl.Age,
+                    Gender = cl.Gender,
+                    Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
+                    {
+                        Sum = ac.Sum,
+                        AccountType = ac.AccountType
+                    }).ToList()
+                });
+
+            clientsQuery = ApplyFilters(name, age, clientsQuery);
+            var data = await clientsQuery.ToListAsync(cancellationToken);
+
+            var queryResult = new QueryResult<ClientResponseModel>
+            {
+                Data = data
+            };
+
+            return queryResult;
         }
 
         private async Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken)
         {
-            var client = await _context.Clients.FirstOrDefaultAsync(x => x.ClientId == clientId, cancellationToken);
+            var client = await _context.Clients.SingleOrDefaultAsync(x => x.ClientId == clientId, cancellationToken);
 
             if (client == null)
             {
@@ -118,6 +133,21 @@ namespace SampleApp.Core.Dal
             {
                 client.Gender = requestModel.Gender;
             }
+        }
+
+        private IQueryable<ClientResponseModel> ApplyFilters(string name, int? age, IQueryable<ClientResponseModel> query)
+        {
+
+            if (name != null)
+            {
+                query = query.Where(cl => cl.Name.ToLower().Contains(name.ToLower()));
+            }
+            if (age != null)
+            {
+                query = query.Where(cl => cl.Age == age);
+            }
+
+            return query;
         }
     }
 }
