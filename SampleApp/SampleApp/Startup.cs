@@ -25,7 +25,7 @@ namespace SampleApp
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AccountContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             var assembly = Assembly.Load("SampleApp.Controllers");
 
