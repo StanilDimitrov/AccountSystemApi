@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 using SampleApp.Core.Dal;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
+using SampleApp.Core.Utilities.Extensions;
 using System.Reflection;
 
 namespace SampleApp
@@ -43,6 +44,8 @@ namespace SampleApp
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseCustomExceptionHandler();
 
             app.UseHttpsRedirection();
 
