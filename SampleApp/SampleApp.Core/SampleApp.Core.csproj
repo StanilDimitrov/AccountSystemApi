@@ -5,13 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Data\EntityConfigurations\**" />
+    <EmbeddedResource Remove="Data\EntityConfigurations\**" />
+    <None Remove="Data\EntityConfigurations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Remove="Migrations\20200524154822_Initial.cs" />
     <Compile Remove="Migrations\20200524154822_Initial.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Folder Include="Contract\" />
-    <Folder Include="Data\EntityConfigurations\" />
   </ItemGroup>
 
   <ItemGroup>

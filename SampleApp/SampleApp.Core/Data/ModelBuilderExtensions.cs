@@ -60,7 +60,7 @@ namespace SampleApp.Core.Data
                     AccountId = 2,
                     Sum = 2500,
                     AccountType = AccountType.Credit,
-                    ClientId = 2
+                    ClientId = 1
                 },
 
                 new Account
@@ -68,7 +68,7 @@ namespace SampleApp.Core.Data
                     AccountId = 3,
                     Sum = 2500,
                     AccountType = AccountType.Credit,
-                    ClientId = 3
+                    ClientId = 1
                 },
 
                 new Account
@@ -76,8 +76,32 @@ namespace SampleApp.Core.Data
                     AccountId = 4,
                     Sum = 3500,
                     AccountType = AccountType.Deposit,
-                    ClientId = 4
-                }
+                    ClientId = 2
+                },
+
+                 new Account
+                 {
+                     AccountId = 5,
+                     Sum = 2500,
+                     AccountType = AccountType.Deposit,
+                     ClientId = 2
+                 },
+
+                  new Account
+                  {
+                      AccountId = 6,
+                      Sum = 1500,
+                      AccountType = AccountType.Credit,
+                      ClientId = 3
+                  },
+
+                  new Account
+                  {
+                      AccountId = 7,
+                      Sum = 2000,
+                      AccountType = AccountType.Credit,
+                      ClientId = 4
+                  }
             );
         }
     }
