@@ -1,4 +1,5 @@
-﻿using SampleApp.Core.Models.Query;
+﻿using SampleApp.Core.Entities;
+using SampleApp.Core.Models.Query;
 using SampleApp.Core.Models.Request;
 using SampleApp.Core.Models.Response;
 using System.Threading;
@@ -8,6 +9,8 @@ namespace SampleApp.Core.Dal.Contracts
 {
     public interface IClientService
     {
+        Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken);
+        
         Task<int> CreateCleintAsync(ClientCreateRequestModel request, CancellationToken cancellationToken);
 
         Task<ClientResponseModel> GetClientDetailsAsync(int id, CancellationToken cancellationToken);

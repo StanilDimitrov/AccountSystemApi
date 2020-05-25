@@ -8,7 +8,7 @@ namespace SampleApp.Core.Dal.Contracts
     {
         Task<int> AddFundsToClientAccountAsync(int id, AddFundsToAccountRequestModel requestModel, CancellationToken cancellationToken);
 
-        Task<int> UpdateAccountAsync(int id, UpdateAccountRequestModel requestModel, CancellationToken cancellationToken);
+        Task UpdateAccountAsync(int id, UpdateAccountRequestModel requestModel, CancellationToken cancellationToken);
     }
 }
 

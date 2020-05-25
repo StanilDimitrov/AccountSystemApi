@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
 using SampleApp.Core.Entities;
@@ -110,13 +111,13 @@ namespace SampleApp.Core.Dal
             return queryResult;
         }
 
-        private async Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken)
+        public async Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken)
         {
             var client = await _context.Clients.SingleOrDefaultAsync(x => x.ClientId == clientId, cancellationToken);
 
             if (client == null)
             {
-                throw new ArgumentNullException();
+                throw new NotFoundException($"Client with id: {clientId} does not exist.");
             }
 
             return client;

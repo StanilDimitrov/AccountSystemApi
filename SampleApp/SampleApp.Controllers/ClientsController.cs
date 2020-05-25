@@ -16,69 +16,79 @@ namespace SampleApp.Controllers
     public class ClientsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IClientService _userService;
+        private readonly IClientService _clientService;
 
         public ClientsController(ILogger<ClientsController> logger, IClientService userService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _userService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _clientService = userService ?? throw new ArgumentNullException(nameof(userService));
         }
 
-        // POST: api/Users
+        // POST: api/Clients
         [HttpPost]
         public async Task<ActionResult> CreateClientAsync(ClientCreateRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to CreateUserAsync.");
 
-            var id = await _userService.CreateCleintAsync(request, cancellationToken);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(request);
+            }
+
+            var id = await _clientService.CreateCleintAsync(request, cancellationToken);
 
            return new ObjectResult(id) { StatusCode = StatusCodes.Status201Created };
         }
 
-        // PUT: api/Users/5
+        // PUT: api/Clients/5
         [HttpPut]
         public async Task<ActionResult> UpdateClientAsync(int id, ClientUpdateRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
-            if (!request.Age.HasValue && !request.Gender.HasValue)
+            if (!ModelState.IsValid)
             {
-                return BadRequest("Input parameters are not valid");
+                return BadRequest(request);
             }
 
-             await _userService.UpdateClientAsync(id, request, cancellationToken);
+            if (!request.Age.HasValue && !request.Gender.HasValue)
+            {
+                return BadRequest("Please enter at least one input parameter.");
+            }
+
+             await _clientService.UpdateClientAsync(id, request, cancellationToken);
 
             return Ok();
         }
 
-        // DELETE: api/Users/5
+        // DELETE: api/Clients/5
         [HttpDelete]
         public async Task<ActionResult> DeleteClientAsync(int id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
-            await _userService.DeleteUserAsync(id, cancellationToken);
+            await _clientService.DeleteUserAsync(id, cancellationToken);
 
             return Ok();
         }
 
-        // GET: api/Users
+        // GET: api/Clients
         [HttpGet]
         public async Task<ActionResult<QueryResult<ClientResponseModel>>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to GetUsersGridAsync.");
 
-           return await _userService.GetClientGridAsync(name, age , cancellationToken);
+           return await _clientService.GetClientGridAsync(name, age , cancellationToken);
 
         }
 
-        // GET: api/Users/5
+        // GET: api/Clients/5
         [HttpGet("{id}")]
         public async Task<ActionResult<ClientResponseModel>> GetClientDetailsAsync(int id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to GetUserDetailsAsync.");
 
-            var response = await _userService.GetClientDetailsAsync(id, cancellationToken);
+            var response = await _clientService.GetClientDetailsAsync(id, cancellationToken);
             return response;
         }
     }
