@@ -1,8 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
 using SampleApp.Core.Entities;
+using SampleApp.Core.Enums;
 using SampleApp.Core.Models.Internal;
 using SampleApp.Core.Models.Query;
 using SampleApp.Core.Models.Request;
@@ -16,10 +18,12 @@ namespace SampleApp.Core.Dal
 {
     public class ClientService : IClientService
     {
+        private readonly ILogger _logger;
         private readonly AccountContext _context;
 
-        public ClientService(AccountContext context)
+        public ClientService(ILogger<ClientService> logger, AccountContext context)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
         public async Task<int> CreateCleintAsync(ClientCreateRequestModel clientModel, CancellationToken cancellationToken)
@@ -35,6 +39,7 @@ namespace SampleApp.Core.Dal
 
             _context.Clients.Add(client);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation($"Client with name: {client.Name}, age: {client.Age} was created.");
 
             return client.ClientId;
         }
@@ -48,6 +53,7 @@ namespace SampleApp.Core.Dal
             SetClientProperties(client, request);
 
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation($"Client with id: {client.ClientId} was updated.");
         }
 
         public async Task DeleteUserAsync(int clientId, CancellationToken cancellationToken)
@@ -58,6 +64,7 @@ namespace SampleApp.Core.Dal
 
             _context.Clients.Remove(client);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation($"Client with id: {client.ClientId} was delted.");
         }
 
         public async Task<ClientResponseModel> GetClientDetailsAsync(int clientId, CancellationToken cancellationToken)

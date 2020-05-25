@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
@@ -13,11 +14,13 @@ namespace SampleApp.Core.Dal
 {
     public class AccountService : IAccountService
     {
+        private readonly ILogger _logger;
         private readonly AccountContext _context;
         private readonly IClientService _clientService;
 
-        public AccountService(AccountContext context, IClientService clientService)
+        public AccountService(ILogger<ClientService> logger, AccountContext context, IClientService clientService)
         {
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
         }
@@ -36,6 +39,7 @@ namespace SampleApp.Core.Dal
 
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation($"To Client with id: {client.Id} was added new account with id: {account.AccountId} with sum: {account.Sum}");
 
             return account.AccountId;
         }
@@ -47,7 +51,8 @@ namespace SampleApp.Core.Dal
             var account = await GetAccountAsync(accountId, cancellationToken);
             SetAccountProperties(account, requestModel);
 
-           await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+            _logger.LogInformation($"Account with id: {account.AccountId} was updated.");
         }
 
         private async Task<Account> GetAccountAsync(int accountId, CancellationToken cancellationToken)
