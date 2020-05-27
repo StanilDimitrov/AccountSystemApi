@@ -1,12 +1,13 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using SampleApp.Core.Contract;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
 using SampleApp.Core.Entities;
+using SampleApp.Core.Models.DTOs;
 using SampleApp.Core.Models.Internal;
+using SampleApp.Core.Models.Mappers;
 using SampleApp.Core.Models.Query;
-using SampleApp.Core.Models.Request;
 using SampleApp.Core.Models.Response;
 using System;
 using System.Linq;
@@ -17,28 +18,46 @@ namespace SampleApp.Core.Dal
 {
     public class ClientService : IClientService
     {
-        private readonly ILogger _logger;
         private readonly AccountContext _context;
 
-        public ClientService(ILogger<ClientService> logger, AccountContext context)
+        public ClientService (AccountContext context)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
 
-        public async Task UpdateClientAsync(int clientId, ClientUpdateRequestModel request, CancellationToken cancellationToken)
+        public async Task<ClientDTO> CreateClientAsync(CreateClientCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = await GetClientAsync(clientId, cancellationToken);
+            var client = new Client
+            {
+                Name = command.Name,
+                Age = command.Age,
+                Gender = command.Gender
+            };
 
-            SetClientProperties(client, request);
-
+            _context.Clients.Add(client);
             await _context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"Client with id: {client.ClientId} was updated.");
+
+            return client.ToDTO();
         }
 
-        public async Task DeleteUserAsync(int clientId, CancellationToken cancellationToken)
+        public async Task<ClientDTO> UpdateClientAsync(UpdateClientCommand command, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var client = await GetClientAsync(command.ClientId, cancellationToken);
+
+            SetClientProperties(client, command);
+
+            await _context.SaveChangesAsync(cancellationToken);
+
+            var updatedClient = await GetClientAsync(command.ClientId, cancellationToken);
+
+            return updatedClient.ToDTO();
+        }
+
+        public async Task<ClientDTO> DeleteClientAsync(int clientId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -46,7 +65,8 @@ namespace SampleApp.Core.Dal
 
             _context.Clients.Remove(client);
             await _context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"Client with id: {client.ClientId} was delted.");
+
+            return client.ToDTO();
         }
 
         public async Task<ClientResponseModel> GetClientDetailsAsync(int clientId, CancellationToken cancellationToken)
@@ -112,22 +132,21 @@ namespace SampleApp.Core.Dal
             return client;
         }
 
-        private void SetClientProperties(Client client, ClientUpdateRequestModel requestModel)
+        private void SetClientProperties(Client client, UpdateClientCommand command)
         {
-            if (requestModel.Age != null)
+            if (command.Age != null)
             {
-                client.Age = (int)requestModel.Age;
+                client.Age = (int)command.Age;
             }
 
-            if (requestModel.Gender != null)
+            if (command.Gender != null)
             {
-                client.Gender = requestModel.Gender;
+                client.Gender = command.Gender;
             }
         }
 
         private IQueryable<ClientResponseModel> ApplyFilters(string name, int? age, IQueryable<ClientResponseModel> query)
         {
-
             if (name != null)
             {
                 query = query.Where(cl => cl.Name.ToLower().Contains(name.ToLower()));

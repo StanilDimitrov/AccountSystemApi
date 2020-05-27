@@ -9,22 +9,24 @@ using System.Threading.Tasks;
 
 namespace SampleApp.Handlers
 {
-    public class CreateClientCommandHandler: IRequestHandler<CreateClientCommand, ClientDTO>
+    public class DeleteClientCommandHandler : IRequestHandler<DeleteClientCommand, ClientDTO>
     {
         private readonly IClientService _clientService;
         private readonly ILogger _logger;
-        public CreateClientCommandHandler(IClientService clientService, ILogger<CreateClientCommandHandler> logger)
+        public DeleteClientCommandHandler(
+            IClientService clientService,
+            ILogger<DeleteClientCommandHandler> logger)
         {
             _clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<ClientDTO> Handle(
-            CreateClientCommand command,
+            DeleteClientCommand command,
             CancellationToken cancellationToken)
         {
-            var clientDTO = await _clientService.CreateClientAsync(command, cancellationToken);
-            _logger.LogInformation($"Client with name: {clientDTO.Name} and age: {clientDTO.Age}  was created.");
+            var clientDTO = await _clientService.DeleteClientAsync(command.ClientId, cancellationToken);
+            _logger.LogInformation($"Client with id: {clientDTO.ClientId} was deleted.");
 
             return clientDTO;
         }

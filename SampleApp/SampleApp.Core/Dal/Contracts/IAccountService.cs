@@ -1,4 +1,5 @@
-﻿using SampleApp.Core.Models.Request;
+﻿using SampleApp.Core.Contract;
+using SampleApp.Core.Models.DTOs;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -6,9 +7,9 @@ namespace SampleApp.Core.Dal.Contracts
 {
     public interface IAccountService
     {
-        Task<int> AddFundsToClientAccountAsync(int id, AddFundsToAccountRequestModel requestModel, CancellationToken cancellationToken);
+        Task<AccountDTO> AddFundsToClientAccountAsync(AddFundsToAccountCommand command, CancellationToken cancellationToken);
 
-        Task UpdateAccountAsync(int id, UpdateAccountRequestModel requestModel, CancellationToken cancellationToken);
+        Task<AccountDTO> UpdateAccountAsync(UpdateAccountCommand command, CancellationToken cancellationToken);
     }
 }
 

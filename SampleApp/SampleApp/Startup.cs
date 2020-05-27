@@ -36,8 +36,9 @@ namespace SampleApp
 
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IAccountService, AccountService>();
-            var mediatorAssembly = Assembly.Load("SampleApp.Handlers");
-            services.AddMediatR(mediatorAssembly);
+
+            var handlersAssembly = Assembly.Load("SampleApp.Handlers");
+            services.AddMediatR(handlersAssembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,11 +51,11 @@ namespace SampleApp
 
             app.UseCustomExceptionHandler();
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

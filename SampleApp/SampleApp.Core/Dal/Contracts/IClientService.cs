@@ -1,6 +1,7 @@
-﻿using SampleApp.Core.Entities;
+﻿using SampleApp.Core.Contract;
+using SampleApp.Core.Entities;
+using SampleApp.Core.Models.DTOs;
 using SampleApp.Core.Models.Query;
-using SampleApp.Core.Models.Request;
 using SampleApp.Core.Models.Response;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,9 +14,11 @@ namespace SampleApp.Core.Dal.Contracts
         
         Task<ClientResponseModel> GetClientDetailsAsync(int id, CancellationToken cancellationToken);
 
-        Task UpdateClientAsync(int id, ClientUpdateRequestModel request, CancellationToken cancellationToken);
+        Task<ClientDTO> CreateClientAsync(CreateClientCommand command, CancellationToken cancellationToken);
 
-        Task DeleteUserAsync(int id, CancellationToken cancellationToken);
+        Task<ClientDTO> UpdateClientAsync(UpdateClientCommand command, CancellationToken cancellationToken);
+
+        Task<ClientDTO> DeleteClientAsync(int id, CancellationToken cancellationToken);
 
         Task<QueryResult<ClientResponseModel>> GetClientGridAsync(string name, int? age, CancellationToken cancellationToken);
     }

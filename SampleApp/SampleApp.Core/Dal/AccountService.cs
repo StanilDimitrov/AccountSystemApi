@@ -1,11 +1,12 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Logging;
+using SampleApp.Core.Contract;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
 using SampleApp.Core.Entities;
 using SampleApp.Core.Enums;
-using SampleApp.Core.Models.Request;
+using SampleApp.Core.Models.DTOs;
+using SampleApp.Core.Models.Mappers;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,45 +15,45 @@ namespace SampleApp.Core.Dal
 {
     public class AccountService : IAccountService
     {
-        private readonly ILogger _logger;
         private readonly AccountContext _context;
         private readonly IClientService _clientService;
 
-        public AccountService(ILogger<ClientService> logger, AccountContext context, IClientService clientService)
+        public AccountService(AccountContext context, IClientService clientService)
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
         }
-        public async Task<int> AddFundsToClientAccountAsync(int clientId, AddFundsToAccountRequestModel requestModel, CancellationToken cancellationToken)
+        public async Task<AccountDTO> AddFundsToClientAccountAsync(AddFundsToAccountCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = _clientService.GetClientAsync(clientId, cancellationToken);
+            var client = _clientService.GetClientAsync(command.ClientId, cancellationToken);
 
             var account = new Account
             {
-                Sum = requestModel.Sum,
-                AccountType = requestModel.AccountType,
+                Sum = command.Sum,
+                AccountType = command.AccountType,
                 ClientId = client.Id
             };
 
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"To Client with id: {client.Id} was added new account with id: {account.AccountId} with sum: {account.Sum}");
-
-            return account.AccountId;
+            
+            return account.ToDTO();
         }
 
-        public async Task UpdateAccountAsync(int accountId, UpdateAccountRequestModel requestModel, CancellationToken cancellationToken)
+        public async Task<AccountDTO> UpdateAccountAsync(UpdateAccountCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var account = await GetAccountAsync(accountId, cancellationToken);
-            SetAccountProperties(account, requestModel);
+            var account = await GetAccountAsync(command.AccountId, cancellationToken);
+            SetAccountProperties(account, command);
 
             await _context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"Account with id: {account.AccountId} was updated.");
+
+            var updatedAccount = await GetAccountAsync(command.AccountId, cancellationToken);
+
+            return updatedAccount.ToDTO();
         }
 
         private async Task<Account> GetAccountAsync(int accountId, CancellationToken cancellationToken)
@@ -67,13 +68,13 @@ namespace SampleApp.Core.Dal
             return account;
         }
 
-        private void SetAccountProperties(Account account, UpdateAccountRequestModel requestModel)
+        private void SetAccountProperties(Account account, UpdateAccountCommand command)
         {
-            if (requestModel.Sum != null)
+            if (command.Sum != null)
             {
                 if (account.AccountType == AccountType.Deposit)
                 {
-                    account.Sum += (decimal)requestModel.Sum;
+                    account.Sum += (decimal)command.Sum;
 
                     if (account.Sum < 0)
                     {
@@ -82,13 +83,13 @@ namespace SampleApp.Core.Dal
                 }
                 else
                 {
-                    account.Sum += (decimal)requestModel.Sum;
+                    account.Sum += (decimal)command.Sum;
                 }
             }
 
-            if (requestModel.AccountType != null)
+            if (command.AccountType != null)
             {
-                account.AccountType = (AccountType)requestModel.AccountType;
+                account.AccountType = (AccountType)command.AccountType;
             }
         }
     }

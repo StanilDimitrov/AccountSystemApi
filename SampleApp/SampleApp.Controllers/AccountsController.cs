@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SampleApp.Core.Dal.Contracts;
+using SampleApp.Core.Models.Mappers;
 using SampleApp.Core.Models.Request;
 using System;
 using System.Threading;
@@ -14,31 +16,36 @@ namespace SampleApp.Controllers
     {
         private readonly ILogger _logger;
         private readonly IAccountService _accountService;
+        private readonly IMediator _mediator;
 
-        public AccountsController(ILogger<AccountsController> logger, IAccountService accountService)
+        public AccountsController(ILogger<AccountsController> logger, IMediator mediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
-            _accountService = accountService ?? throw new ArgumentNullException(nameof(accountService));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         // POST: api/Accounts/5
-        [HttpPost]
+        [HttpPost("{id}")]
         public async Task<ActionResult<int>> AddFundsToClinetAsync(int id, AddFundsToAccountRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to AddFundsToClinetAsync.");
 
-            var accountId = await _accountService.AddFundsToClientAccountAsync(id, request, cancellationToken);
+            var command = request.ToAddFundsToAccountCommand(id);
 
-            return accountId;
+            var result = await _mediator.Send(command, cancellationToken);
+
+            return result.AccountId;
         }
 
         // PUT: api/Accounts/5
-        [HttpPut]
+        [HttpPut("{id}")]
         public async Task<ActionResult> UpdateAccountAsync(int id, UpdateAccountRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to UpdateAccountAsync.");
 
-            await _accountService.UpdateAccountAsync(id, request, cancellationToken);
+            var command = request.ToUpdateAccountCommand(id);
+
+            await _mediator.Send(command, cancellationToken);
 
             return Ok();
         }

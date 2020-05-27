@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SampleApp.Core.Contract;
 using SampleApp.Core.Dal.Contracts;
+using SampleApp.Core.Models.Mappers;
 using SampleApp.Core.Models.Query;
 using SampleApp.Core.Models.Request;
 using SampleApp.Core.Models.Response;
@@ -32,15 +34,16 @@ namespace SampleApp.Controllers
 
         // POST: api/Clients
         [HttpPost]
-        public async Task<ActionResult> CreateClientAsync(CreateClientCommand command, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateClientAsync(CreateClientRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to CreateUserAsync.");
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(command);
+                return BadRequest(request);
             }
 
+            var command = request.ToCreateClientCommand();
             var result = await _mediator.Send(command);
            // var id = await _clientService.CreateCleintAsync(request, cancellationToken);
 
@@ -48,8 +51,8 @@ namespace SampleApp.Controllers
         }
 
         // PUT: api/Clients/5
-        [HttpPut]
-        public async Task<ActionResult> UpdateClientAsync(int id, ClientUpdateRequestModel request, CancellationToken cancellationToken)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateClientAsync(int id, UpdateClientRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
@@ -63,18 +66,24 @@ namespace SampleApp.Controllers
                 return BadRequest("Please enter at least one input parameter.");
             }
 
-             await _clientService.UpdateClientAsync(id, request, cancellationToken);
+            var command = request.ToUpdateClientCommand(id);
+            await _mediator.Send(command, cancellationToken);
 
             return Ok();
         }
 
         // DELETE: api/Clients/5
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteClientAsync(int id, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
-            await _clientService.DeleteUserAsync(id, cancellationToken);
+            var command = new DeleteClientCommand
+            {
+                ClientId = id
+            };
+
+            await _mediator.Send(command, cancellationToken);
 
             return Ok();
         }
