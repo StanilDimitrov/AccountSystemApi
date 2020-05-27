@@ -1,3 +1,4 @@
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc.ApplicationParts;
@@ -35,6 +36,8 @@ namespace SampleApp
 
             services.AddScoped<IClientService, ClientService>();
             services.AddScoped<IAccountService, AccountService>();
+            var mediatorAssembly = Assembly.Load("SampleApp.Handlers");
+            services.AddMediatR(mediatorAssembly);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

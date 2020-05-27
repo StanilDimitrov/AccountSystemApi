@@ -1,9 +1,12 @@
-﻿using SampleApp.Core.Enums;
+﻿using MediatR;
+using SampleApp.Core.Enums;
+using SampleApp.Core.Models.DTOs;
+using SampleApp.Core.Models.Response;
 using System.ComponentModel.DataAnnotations;
 
 namespace SampleApp.Core.Models.Request
 {
-    public class ClientCreateRequestModel
+    public class CreateClientCommand : IRequest<ClientDTO>
     {
         [Required]
         [MinLength(2, ErrorMessage = "Name must be between 2 and 100 characters long.")]

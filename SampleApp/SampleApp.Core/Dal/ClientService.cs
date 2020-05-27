@@ -4,7 +4,6 @@ using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
 using SampleApp.Core.Entities;
-using SampleApp.Core.Enums;
 using SampleApp.Core.Models.Internal;
 using SampleApp.Core.Models.Query;
 using SampleApp.Core.Models.Request;
@@ -25,23 +24,6 @@ namespace SampleApp.Core.Dal
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _context = context ?? throw new ArgumentNullException(nameof(context));
-        }
-        public async Task<int> CreateCleintAsync(ClientCreateRequestModel clientModel, CancellationToken cancellationToken)
-        {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var client = new Client
-            {
-                Name = clientModel.Name,
-                Age = clientModel.Age,
-                Gender = clientModel.Gender
-            };
-
-            _context.Clients.Add(client);
-            await _context.SaveChangesAsync(cancellationToken);
-            _logger.LogInformation($"Client with name: {client.Name}, age: {client.Age} was created.");
-
-            return client.ClientId;
         }
 
         public async Task UpdateClientAsync(int clientId, ClientUpdateRequestModel request, CancellationToken cancellationToken)

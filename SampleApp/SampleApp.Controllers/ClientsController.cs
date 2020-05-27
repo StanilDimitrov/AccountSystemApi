@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SampleApp.Core.Dal.Contracts;
@@ -17,27 +18,33 @@ namespace SampleApp.Controllers
     {
         private readonly ILogger _logger;
         private readonly IClientService _clientService;
+        private readonly IMediator _mediator;
 
-        public ClientsController(ILogger<ClientsController> logger, IClientService userService)
+        public ClientsController(
+            ILogger<ClientsController> logger,
+            IClientService userService,
+            IMediator mediator)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _clientService = userService ?? throw new ArgumentNullException(nameof(userService));
+            _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
         }
 
         // POST: api/Clients
         [HttpPost]
-        public async Task<ActionResult> CreateClientAsync(ClientCreateRequestModel request, CancellationToken cancellationToken)
+        public async Task<ActionResult> CreateClientAsync(CreateClientCommand command, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to CreateUserAsync.");
 
             if (!ModelState.IsValid)
             {
-                return BadRequest(request);
+                return BadRequest(command);
             }
 
-            var id = await _clientService.CreateCleintAsync(request, cancellationToken);
+            var result = await _mediator.Send(command);
+           // var id = await _clientService.CreateCleintAsync(request, cancellationToken);
 
-           return new ObjectResult(id) { StatusCode = StatusCodes.Status201Created };
+           return new ObjectResult(result.ClientId) { StatusCode = StatusCodes.Status201Created };
         }
 
         // PUT: api/Clients/5

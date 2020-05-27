@@ -5,6 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MediatR" Version="8.0.1" />
+    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="3.1.4" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="3.1.4">
       <PrivateAssets>all</PrivateAssets>
@@ -15,6 +17,7 @@
   <ItemGroup>
     <ProjectReference Include="..\SampleApp.Controllers\SampleApp.Controllers.csproj" />
     <ProjectReference Include="..\SampleApp.Core\SampleApp.Core.csproj" />
+    <ProjectReference Include="..\SampleApp.Handlers\SampleApp.Handlers.csproj" />
   </ItemGroup>
 
 

@@ -11,8 +11,6 @@ namespace SampleApp.Core.Dal.Contracts
     {
         Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken);
         
-        Task<int> CreateCleintAsync(ClientCreateRequestModel request, CancellationToken cancellationToken);
-
         Task<ClientResponseModel> GetClientDetailsAsync(int id, CancellationToken cancellationToken);
 
         Task UpdateClientAsync(int id, ClientUpdateRequestModel request, CancellationToken cancellationToken);
