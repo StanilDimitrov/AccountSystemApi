@@ -50,10 +50,7 @@ namespace SampleApp.Core.Dal
             SetAccountProperties(account, command);
 
             await _context.SaveChangesAsync(cancellationToken);
-
-            var updatedAccount = await GetAccountAsync(command.AccountId, cancellationToken);
-
-            return updatedAccount.ToDTO();
+            return account.ToDTO();
         }
 
         private async Task<Account> GetAccountAsync(int accountId, CancellationToken cancellationToken)

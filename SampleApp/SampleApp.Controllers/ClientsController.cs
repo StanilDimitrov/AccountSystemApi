@@ -47,7 +47,6 @@ namespace SampleApp.Controllers
             var clientId = await _mediator.Send(command, cancellationToken);
 
             var response = new CreateClientResponseModel { ClientId = clientId };
-
             return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
         }
 
@@ -79,11 +78,7 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to UpdateUserAsync.");
 
-            var command = new DeleteClientCommand
-            {
-                ClientId = id
-            };
-
+            var command = new DeleteClientCommand { ClientId = id };
             await _mediator.Send(command, cancellationToken);
 
             return Ok();
@@ -96,7 +91,6 @@ namespace SampleApp.Controllers
             _logger.LogInformation("Call made to GetUsersGridAsync.");
 
            return await _clientService.GetClientsGridAsync(name, age, cancellationToken);
-
         }
 
         // GET: api/Clients/5
@@ -105,8 +99,7 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to GetUserDetailsAsync.");
 
-            var response = await _clientService.GetClientDetailsAsync(id, cancellationToken);
-            return response;
+            return await _clientService.GetClientDetailsAsync(id, cancellationToken);
         }
     }
 }

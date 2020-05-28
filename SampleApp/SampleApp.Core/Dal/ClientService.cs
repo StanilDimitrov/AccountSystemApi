@@ -49,12 +49,9 @@ namespace SampleApp.Core.Dal
             var client = await GetClientAsync(command.ClientId, cancellationToken);
 
             SetClientProperties(client, command);
-
             await _context.SaveChangesAsync(cancellationToken);
 
-            var updatedClient = await GetClientAsync(command.ClientId, cancellationToken);
-
-            return updatedClient.ToDTO();
+            return client.ToDTO();
         }
 
         public async Task<ClientDTO> DeleteClientAsync(int clientId, CancellationToken cancellationToken)
@@ -73,7 +70,7 @@ namespace SampleApp.Core.Dal
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var clientWithAccountsModel = await _context.Clients
+            return await _context.Clients
                 .Where(cl => cl.ClientId == clientId)
                 .Include(cl => cl.Accounts)
                 .Select(cl => new ClientResponseModel
@@ -89,8 +86,6 @@ namespace SampleApp.Core.Dal
                         Type = ac.Type
                     }).ToList()
                 }).SingleOrDefaultAsync(cancellationToken);
-
-            return clientWithAccountsModel;
         }
 
         public async Task<QueryResult<ClientResponseModel>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken)

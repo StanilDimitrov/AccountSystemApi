@@ -22,6 +22,8 @@ namespace SampleApp.Handlers.Accounts
 
         public async Task<AccountDTO> Handle(UpdateAccountCommand command, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var accountDTO = await _accountService.UpdateAccountAsync(command, cancellationToken);
             _logger.LogInformation($"Account with id: {accountDTO.AccountId} was updated.");
 

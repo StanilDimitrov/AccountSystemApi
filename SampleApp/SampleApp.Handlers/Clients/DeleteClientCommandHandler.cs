@@ -25,6 +25,8 @@ namespace SampleApp.Handlers.Clients
             DeleteClientCommand command,
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var clientDTO = await _clientService.DeleteClientAsync(command.ClientId, cancellationToken);
             _logger.LogInformation($"Client with id: {clientDTO.ClientId} was deleted.");
 

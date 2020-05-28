@@ -26,8 +26,9 @@ namespace SampleApp.Handlers.Clients
             UpdateClientCommand command,
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
 
-           var clientDTO = await _clientService.UpdateClientAsync(command, cancellationToken);
+            var clientDTO = await _clientService.UpdateClientAsync(command, cancellationToken);
            _logger.LogInformation($"Client with id: {clientDTO.ClientId} was updated.");
 
             return clientDTO;

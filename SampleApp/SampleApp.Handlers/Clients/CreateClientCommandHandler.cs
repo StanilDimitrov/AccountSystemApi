@@ -22,6 +22,8 @@ namespace SampleApp.Handlers.Clients
             CreateClientCommand command,
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var clientDTO = await _clientService.CreateClientAsync(command, cancellationToken);
             _logger.LogInformation($"Client with name: {clientDTO.Name} and age: {clientDTO.Age}  was created.");
 

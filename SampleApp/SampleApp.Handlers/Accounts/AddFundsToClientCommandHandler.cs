@@ -20,6 +20,8 @@ namespace SampleApp.Handlers.Accounts
 
         public async Task<int> Handle(AddFundsToClientCommand command, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var accountDTO = await _accountService.AddFundsToClientAsync(command, cancellationToken);
             _logger.LogInformation($"To Client with id: {accountDTO.ClientId} was added new account with id: {accountDTO.AccountId} with sum: {accountDTO.Sum}");
 

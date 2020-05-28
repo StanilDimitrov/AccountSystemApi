@@ -31,11 +31,9 @@ namespace SampleApp.Controllers
             _logger.LogInformation("Call made to AddFundsToClinetAsync.");
 
             var command = request.ToAddFundsToClientCommand(id);
-
             var accountId = await _mediator.Send(command, cancellationToken);
 
             var response = new CreateAccountResponseModel { AccountId = accountId };
-
             return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
         }
 
@@ -52,7 +50,6 @@ namespace SampleApp.Controllers
             }
 
             var command = request.ToUpdateAccountCommand(id);
-
             await _mediator.Send(command, cancellationToken);
 
             return Ok();

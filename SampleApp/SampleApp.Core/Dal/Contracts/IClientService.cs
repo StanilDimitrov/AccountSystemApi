@@ -1,5 +1,4 @@
-﻿using SampleApp.Core.Contract;
-using SampleApp.Core.Contract.AccountsCommand;
+﻿using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Entities;
 using SampleApp.Core.Models.DTOs;
 using SampleApp.Core.Models.Query;
