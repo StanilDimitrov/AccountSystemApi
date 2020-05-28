@@ -78,13 +78,15 @@ namespace SampleApp.Core.Dal
                 .Include(cl => cl.Accounts)
                 .Select(cl => new ClientResponseModel
                 {
+                    ClientId = cl.ClientId,
                     Name = cl.Name,
                     Age = cl.Age,
                     Gender = cl.Gender,
                     Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
-                    {
+                    { 
+                        AccountId = ac.AccountId,
                         Sum = ac.Sum,
-                        AccountType = ac.Type
+                        Type = ac.Type
                     }).ToList()
                 }).SingleOrDefaultAsync(cancellationToken);
 
@@ -105,8 +107,9 @@ namespace SampleApp.Core.Dal
                     Gender = cl.Gender,
                     Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
                     {
+                        AccountId = ac.AccountId,
                         Sum = ac.Sum,
-                        AccountType = ac.Type
+                        Type = ac.Type
                     }).ToList()
                 });
 

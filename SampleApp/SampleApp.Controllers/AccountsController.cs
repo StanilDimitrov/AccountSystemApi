@@ -46,7 +46,7 @@ namespace SampleApp.Controllers
             _logger.LogInformation("Call made to UpdateAccountAsync.");
 
 
-            if (!request.Sum.HasValue && !request.AccountType.HasValue)
+            if (!request.Sum.HasValue && !request.Type.HasValue)
             {
                 return BadRequest("Please enter at least one input parameter.");
             }

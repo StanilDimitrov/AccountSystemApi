@@ -73,7 +73,7 @@ namespace SampleApp.Tests.Controllers
         {
             var requestModel = _fixture.Build<UpdateAccountRequestModel>()
                 .Without(x => x.Sum)
-                .Without(x => x.AccountType)
+                .Without(x => x.Type)
                 .Create();
 
             var id = _fixture.Create<int>();

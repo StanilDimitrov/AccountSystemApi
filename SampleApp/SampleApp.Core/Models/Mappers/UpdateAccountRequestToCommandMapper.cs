@@ -16,7 +16,7 @@ namespace SampleApp.Core.Models.Mappers
             {
                 AccountId = accountId,
                 Sum = request.Sum,
-                AccountType = request.AccountType
+                Type = request.Type
             };
         }
     }

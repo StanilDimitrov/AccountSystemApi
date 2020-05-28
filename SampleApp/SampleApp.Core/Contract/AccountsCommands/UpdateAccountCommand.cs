@@ -10,6 +10,6 @@ namespace SampleApp.Core.Contract.AccountsCommand
 
         public decimal? Sum { get; set; }
 
-        public AccountType? AccountType { get; set; }
+        public AccountType? Type { get; set; }
     }
 }

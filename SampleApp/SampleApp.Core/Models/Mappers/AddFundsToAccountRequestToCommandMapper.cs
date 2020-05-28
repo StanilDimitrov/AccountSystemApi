@@ -15,7 +15,7 @@ namespace SampleApp.Core.Models.Mappers
             return new AddFundsToClientCommand()
             {
                 Sum = request.Sum,
-                AccountType = request.AccountType,
+                Type = request.Type,
                 ClientId = clientId
             };
         }

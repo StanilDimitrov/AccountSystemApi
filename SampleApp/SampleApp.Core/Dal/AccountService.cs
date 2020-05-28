@@ -32,7 +32,7 @@ namespace SampleApp.Core.Dal
             var account = new Account
             {
                 Sum = command.Sum,
-                Type = command.AccountType,
+                Type = command.Type,
                 ClientId = client.ClientId
             };
 
@@ -87,9 +87,9 @@ namespace SampleApp.Core.Dal
                 }
             }
 
-            if (command.AccountType != null)
+            if (command.Type != null)
             {
-                account.Type = (AccountType)command.AccountType;
+                account.Type = (AccountType)command.Type;
             }
         }
     }
