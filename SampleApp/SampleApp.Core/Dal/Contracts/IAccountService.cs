@@ -1,4 +1,5 @@
 ﻿using SampleApp.Core.Contract;
+using SampleApp.Core.Entities;
 using SampleApp.Core.Models.DTOs;
 using System.Threading;
 using System.Threading.Tasks;

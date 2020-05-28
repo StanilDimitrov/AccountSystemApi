@@ -6,6 +6,8 @@ namespace SampleApp.Core.Models.Response
 {
     public class ClientResponseModel
     {
+        public int ClientId { get; set; }
+
         public string Name { get; set; }
         
         public int Age { get; set; }

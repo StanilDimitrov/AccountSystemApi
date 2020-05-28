@@ -4,7 +4,7 @@ using SampleApp.Core.Models.DTOs;
 
 namespace SampleApp.Core.Contract
 {
-    public class AddFundsToAccountCommand : IRequest<AccountDTO>
+    public class AddFundsToAccountCommand : IRequest<int>
     {
         public decimal Sum { get; set; }
 

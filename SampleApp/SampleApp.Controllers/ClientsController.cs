@@ -44,10 +44,11 @@ namespace SampleApp.Controllers
             }
 
             var command = request.ToCreateClientCommand();
-            var result = await _mediator.Send(command);
-           // var id = await _clientService.CreateCleintAsync(request, cancellationToken);
+            var clientId = await _mediator.Send(command, cancellationToken);
 
-           return new ObjectResult(result.ClientId) { StatusCode = StatusCodes.Status201Created };
+            var response = new CreateClientResponseModel { ClientId = clientId };
+
+            return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
         }
 
         // PUT: api/Clients/5
@@ -94,7 +95,7 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to GetUsersGridAsync.");
 
-           return await _clientService.GetClientGridAsync(name, age , cancellationToken);
+           return await _clientService.GetClientGridAsync(name, age, cancellationToken);
 
         }
 

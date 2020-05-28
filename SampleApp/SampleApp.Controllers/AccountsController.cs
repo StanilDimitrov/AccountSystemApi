@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Models.Mappers;
 using SampleApp.Core.Models.Request;
+using SampleApp.Core.Models.Response;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,7 +16,6 @@ namespace SampleApp.Controllers
     public class AccountsController : ControllerBase
     {
         private readonly ILogger _logger;
-        private readonly IAccountService _accountService;
         private readonly IMediator _mediator;
 
         public AccountsController(ILogger<AccountsController> logger, IMediator mediator)
@@ -26,15 +26,17 @@ namespace SampleApp.Controllers
 
         // POST: api/Accounts/5
         [HttpPost("{id}")]
-        public async Task<ActionResult<int>> AddFundsToClinetAsync(int id, AddFundsToAccountRequestModel request, CancellationToken cancellationToken)
+        public async Task<ActionResult> AddFundsToClinetAsync(int id, AddFundsToAccountRequestModel request, CancellationToken cancellationToken)
         {
             _logger.LogInformation("Call made to AddFundsToClinetAsync.");
 
             var command = request.ToAddFundsToAccountCommand(id);
 
-            var result = await _mediator.Send(command, cancellationToken);
+            var accountId = await _mediator.Send(command, cancellationToken);
 
-            return result.AccountId;
+            var response = new CreateAccountResponseModel { AccountId = accountId };
+
+            return new ObjectResult(response) { StatusCode = StatusCodes.Status201Created };
         }
 
         // PUT: api/Accounts/5

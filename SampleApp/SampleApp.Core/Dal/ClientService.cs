@@ -99,6 +99,7 @@ namespace SampleApp.Core.Dal
                 .Include(cl => cl.Accounts)
                 .Select(cl => new ClientResponseModel
                 {
+                    ClientId = cl.ClientId,
                     Name = cl.Name,
                     Age = cl.Age,
                     Gender = cl.Gender,

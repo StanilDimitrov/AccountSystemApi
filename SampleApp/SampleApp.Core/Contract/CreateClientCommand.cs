@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using SampleApp.Core.Enums;
-using SampleApp.Core.Models.DTOs;
 
 namespace SampleApp.Core.Contract
 {
-    public class CreateClientCommand : IRequest<ClientDTO>
+    public class CreateClientCommand : IRequest<int>
     {
         public string Name { get; set; }
 

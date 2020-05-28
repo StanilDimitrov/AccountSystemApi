@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace SampleApp.Handlers
 {
-    public class AddFundsToAccountCommandHandler : IRequestHandler<AddFundsToAccountCommand, AccountDTO>
+    public class AddFundsToAccountCommandHandler : IRequestHandler<AddFundsToAccountCommand, int>
     {
         private readonly IAccountService _accountService;
         private readonly ILogger _logger;
@@ -19,12 +19,12 @@ namespace SampleApp.Handlers
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
-        public async Task<AccountDTO> Handle(AddFundsToAccountCommand command, CancellationToken cancellationToken)
+        public async Task<int> Handle(AddFundsToAccountCommand command, CancellationToken cancellationToken)
         {
             var accountDTO = await _accountService.AddFundsToClientAccountAsync(command, cancellationToken);
             _logger.LogInformation($"To Client with id: {accountDTO.ClientId} was added new account with id: {accountDTO.AccountId} with sum: {accountDTO.Sum}");
 
-            return accountDTO;
+            return accountDTO.AccountId;
         }
     }
 }
