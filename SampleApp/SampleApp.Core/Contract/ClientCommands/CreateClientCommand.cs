@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using SampleApp.Core.Enums;
 
-namespace SampleApp.Core.Contract
+namespace SampleApp.Core.Contract.AccountsCommand
 {
     public class CreateClientCommand : IRequest<int>
     {

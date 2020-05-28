@@ -30,7 +30,7 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to AddFundsToClinetAsync.");
 
-            var command = request.ToAddFundsToAccountCommand(id);
+            var command = request.ToAddFundsToClientCommand(id);
 
             var accountId = await _mediator.Send(command, cancellationToken);
 

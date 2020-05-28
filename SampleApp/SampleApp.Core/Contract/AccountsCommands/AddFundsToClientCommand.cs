@@ -1,10 +1,9 @@
 ﻿using MediatR;
 using SampleApp.Core.Enums;
-using SampleApp.Core.Models.DTOs;
 
-namespace SampleApp.Core.Contract
+namespace SampleApp.Core.Contract.AccountsCommand
 {
-    public class AddFundsToAccountCommand : IRequest<int>
+    public class AddFundsToClientCommand : IRequest<int>
     {
         public decimal Sum { get; set; }
 

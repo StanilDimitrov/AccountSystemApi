@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SampleApp.Core.Contract;
+using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Data;
@@ -23,7 +24,7 @@ namespace SampleApp.Core.Dal
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _clientService = clientService ?? throw new ArgumentNullException(nameof(clientService));
         }
-        public async Task<AccountDTO> AddFundsToClientAccountAsync(AddFundsToAccountCommand command, CancellationToken cancellationToken)
+        public async Task<AccountDTO> AddFundsToClientAsync(AddFundsToClientCommand command, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 

@@ -1,12 +1,12 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using SampleApp.Core.Contract;
+using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Dal.Contracts;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SampleApp.Handlers
+namespace SampleApp.Handlers.Clients
 {
     public class CreateClientCommandHandler: IRequestHandler<CreateClientCommand, int>
     {

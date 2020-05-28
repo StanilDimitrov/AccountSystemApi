@@ -1,13 +1,13 @@
 ﻿using MediatR;
 using Microsoft.Extensions.Logging;
-using SampleApp.Core.Contract;
+using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Models.DTOs;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SampleApp.Handlers
+namespace SampleApp.Handlers.Accounts
 {
     public class UpdateAccountCommandHandler : IRequestHandler<UpdateAccountCommand, AccountDTO>
     {

@@ -1,18 +1,18 @@
-﻿using SampleApp.Core.Contract;
+﻿using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Models.Request;
 
 namespace SampleApp.Core.Models.Mappers
 {
     public static class AddFundsToAccountRequestToCommandMapper
     {
-        public static AddFundsToAccountCommand ToAddFundsToAccountCommand(this AddFundsToAccountRequestModel request, int clientId)
+        public static AddFundsToClientCommand ToAddFundsToClientCommand(this AddFundsToAccountRequestModel request, int clientId)
         {
             if (request is null)
             {
                 return null;
             }
 
-            return new AddFundsToAccountCommand()
+            return new AddFundsToClientCommand()
             {
                 Sum = request.Sum,
                 AccountType = request.AccountType,

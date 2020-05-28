@@ -7,6 +7,7 @@ using Moq;
 using NUnit.Framework;
 using SampleApp.Controllers;
 using SampleApp.Core.Contract;
+using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Models.DTOs;
 using SampleApp.Core.Models.Query;
@@ -40,7 +41,8 @@ namespace SampleApp.Tests.Controllers
         [Test]
         public async Task CreateClientAsync_Success()
         {
-            _mockMediator.Setup(x => x.Send(It.IsAny<CreateClientCommand>(), CToken)).ReturnsAsync(It.IsAny<int>).Verifiable();
+            var clientId = _fixture.Create<int>();
+            _mockMediator.Setup(x => x.Send(It.IsAny<CreateClientCommand>(), CToken)).ReturnsAsync(clientId).Verifiable();
 
             var requestModel = _fixture.Create<CreateClientRequestModel>();
             var result = await _clientsController.CreateClientAsync(requestModel, CToken);
@@ -57,8 +59,9 @@ namespace SampleApp.Tests.Controllers
         public async Task UpdateClientAsync_Success()
         {
             var requestModel = _fixture.Create<UpdateClientRequestModel>();
+            var clientDTO = _fixture.Create<ClientDTO>();
 
-            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateClientCommand>(), CToken)).ReturnsAsync(It.IsAny<ClientDTO>).Verifiable();
+            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateClientCommand>(), CToken)).ReturnsAsync(clientDTO).Verifiable();
             var id = _fixture.Create<int>();
             var result = await _clientsController.UpdateClientAsync(id, requestModel, CToken);
 
@@ -89,7 +92,8 @@ namespace SampleApp.Tests.Controllers
         [Test]
         public async Task DeleteClientAsync_Success()
         {
-            _mockMediator.Setup(x => x.Send(It.IsAny<DeleteClientCommand>(), CToken)).ReturnsAsync(It.IsAny<ClientDTO>).Verifiable();
+            var clientDTO = _fixture.Create<ClientDTO>();
+            _mockMediator.Setup(x => x.Send(It.IsAny<DeleteClientCommand>(), CToken)).ReturnsAsync(clientDTO).Verifiable();
 
             var id = _fixture.Create<int>();
             var result = await _clientsController.DeleteClientAsync(id, CToken);
@@ -108,7 +112,9 @@ namespace SampleApp.Tests.Controllers
         {
             var name = _fixture.Create<string>();
             var age = _fixture.Create<int>();
-            _mockClientService.Setup(x => x.GetClientGridAsync(name, age, CToken)).ReturnsAsync(It.IsAny<QueryResult<ClientResponseModel>>).Verifiable();
+            var queryResult = _fixture.Create<QueryResult<ClientResponseModel>>();
+
+            _mockClientService.Setup(x => x.GetClientGridAsync(name, age, CToken)).ReturnsAsync(queryResult).Verifiable();
 
             var id = _fixture.Create<int>();
             var result = await _clientsController.GetClientsGridAsync(name, age, CToken);
@@ -123,7 +129,8 @@ namespace SampleApp.Tests.Controllers
         public async Task GetClientDetailsAsync_Success()
         {
             var id = _fixture.Create<int>();
-            _mockClientService.Setup(x => x.GetClientDetailsAsync(id, CToken)).ReturnsAsync(It.IsAny<ClientResponseModel>).Verifiable();
+            var responseModel = _fixture.Create<ClientResponseModel>();
+            _mockClientService.Setup(x => x.GetClientDetailsAsync(id, CToken)).ReturnsAsync(responseModel).Verifiable();
 
             var result = await _clientsController.GetClientDetailsAsync(id, CToken);
 

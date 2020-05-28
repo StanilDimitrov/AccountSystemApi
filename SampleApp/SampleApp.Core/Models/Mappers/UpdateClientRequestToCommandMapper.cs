@@ -1,4 +1,4 @@
-﻿using SampleApp.Core.Contract;
+﻿using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Models.Request;
 
 namespace SampleApp.Core.Models.Mappers

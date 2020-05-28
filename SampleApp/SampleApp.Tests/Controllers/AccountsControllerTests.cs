@@ -6,8 +6,7 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SampleApp.Controllers;
-using SampleApp.Core.Contract;
-using SampleApp.Core.Dal.Contracts;
+using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Models.DTOs;
 using SampleApp.Core.Models.Request;
 using System.Threading;
@@ -36,12 +35,13 @@ namespace SampleApp.Tests.Controllers
         [Test]
         public async Task AddFundsToAccountAsync_Success()
         {
-            _mockMediator.Setup(x => x.Send(It.IsAny<AddFundsToAccountCommand>(), CToken)).ReturnsAsync(It.IsAny<int>).Verifiable();
+            var accountId = _fixture.Create<int>();
+            _mockMediator.Setup(x => x.Send(It.IsAny<AddFundsToClientCommand>(), CToken)).ReturnsAsync(accountId).Verifiable();
 
             var requestModel = _fixture.Create<AddFundsToAccountRequestModel>();
-            var id = _fixture.Create<int>();
+            
 
-            var result = await _accountsController.AddFundsToClinetAsync(id, requestModel, CToken);
+            var result = await _accountsController.AddFundsToClinetAsync(accountId, requestModel, CToken);
 
             var objectResult = result as ObjectResult;
 
@@ -54,12 +54,12 @@ namespace SampleApp.Tests.Controllers
         [Test]
         public async Task UpdateAccountAsync_Success()
         {
-            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateAccountCommand>(), CToken)).ReturnsAsync(It.IsAny<AccountDTO>).Verifiable();
+            var accountDTO = _fixture.Create<AccountDTO>();
+            _mockMediator.Setup(x => x.Send(It.IsAny<UpdateAccountCommand>(), CToken)).ReturnsAsync(accountDTO).Verifiable();
 
             var requestModel = _fixture.Create<UpdateAccountRequestModel>();
-            var id = _fixture.Create<int>();
 
-            var result = await _accountsController.UpdateAccountAsync(id, requestModel, CToken);
+            var result = await _accountsController.UpdateAccountAsync(accountDTO.AccountId, requestModel, CToken);
 
             var objectResult = result as StatusCodeResult;
 

@@ -2,7 +2,7 @@
 using SampleApp.Core.Enums;
 using SampleApp.Core.Models.DTOs;
 
-namespace SampleApp.Core.Contract
+namespace SampleApp.Core.Contract.AccountsCommand
 {
     public class UpdateAccountCommand : IRequest<AccountDTO>
     {
