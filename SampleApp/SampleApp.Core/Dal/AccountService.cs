@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SampleApp.Core.Contract;
 using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
@@ -28,13 +27,13 @@ namespace SampleApp.Core.Dal
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var client = _clientService.GetClientAsync(command.ClientId, cancellationToken);
+            var client = await _clientService.GetClientAsync(command.ClientId, cancellationToken);
 
             var account = new Account
             {
                 Sum = command.Sum,
-                AccountType = command.AccountType,
-                ClientId = client.Id
+                Type = command.AccountType,
+                ClientId = client.ClientId
             };
 
             _context.Accounts.Add(account);
@@ -73,7 +72,7 @@ namespace SampleApp.Core.Dal
         {
             if (command.Sum != null)
             {
-                if (account.AccountType == AccountType.Deposit)
+                if (account.Type == AccountType.Deposit)
                 {
                     account.Sum += (decimal)command.Sum;
 
@@ -90,7 +89,7 @@ namespace SampleApp.Core.Dal
 
             if (command.AccountType != null)
             {
-                account.AccountType = (AccountType)command.AccountType;
+                account.Type = (AccountType)command.AccountType;
             }
         }
     }

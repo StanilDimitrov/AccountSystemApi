@@ -51,7 +51,7 @@ namespace SampleApp.Core.Data
                 {
                     AccountId = 1,
                     Sum = 1500,
-                    AccountType = AccountType.Deposit,
+                    Type = AccountType.Deposit,
                     ClientId = 1
                 },
 
@@ -59,7 +59,7 @@ namespace SampleApp.Core.Data
                 {
                     AccountId = 2,
                     Sum = 2500,
-                    AccountType = AccountType.Credit,
+                    Type = AccountType.Credit,
                     ClientId = 1
                 },
 
@@ -67,7 +67,7 @@ namespace SampleApp.Core.Data
                 {
                     AccountId = 3,
                     Sum = 2500,
-                    AccountType = AccountType.Credit,
+                    Type = AccountType.Credit,
                     ClientId = 1
                 },
 
@@ -75,7 +75,7 @@ namespace SampleApp.Core.Data
                 {
                     AccountId = 4,
                     Sum = 3500,
-                    AccountType = AccountType.Deposit,
+                    Type = AccountType.Deposit,
                     ClientId = 2
                 },
 
@@ -83,7 +83,7 @@ namespace SampleApp.Core.Data
                  {
                      AccountId = 5,
                      Sum = 2500,
-                     AccountType = AccountType.Deposit,
+                     Type = AccountType.Deposit,
                      ClientId = 2
                  },
 
@@ -91,7 +91,7 @@ namespace SampleApp.Core.Data
                   {
                       AccountId = 6,
                       Sum = 1500,
-                      AccountType = AccountType.Credit,
+                      Type = AccountType.Credit,
                       ClientId = 3
                   },
 
@@ -99,7 +99,7 @@ namespace SampleApp.Core.Data
                   {
                       AccountId = 7,
                       Sum = 2000,
-                      AccountType = AccountType.Credit,
+                      Type = AccountType.Credit,
                       ClientId = 4
                   }
             );

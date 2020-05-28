@@ -95,7 +95,7 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to GetUsersGridAsync.");
 
-           return await _clientService.GetClientGridAsync(name, age, cancellationToken);
+           return await _clientService.GetClientsGridAsync(name, age, cancellationToken);
 
         }
 

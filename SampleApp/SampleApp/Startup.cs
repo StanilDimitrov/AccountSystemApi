@@ -51,11 +51,7 @@ namespace SampleApp
 
             app.UseCustomExceptionHandler();
 
-            //app.UseHttpsRedirection();
-
             app.UseRouting();
-
-            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

@@ -21,6 +21,6 @@ namespace SampleApp.Core.Dal.Contracts
 
         Task<ClientDTO> DeleteClientAsync(int id, CancellationToken cancellationToken);
 
-        Task<QueryResult<ClientResponseModel>> GetClientGridAsync(string name, int? age, CancellationToken cancellationToken);
+        Task<QueryResult<ClientResponseModel>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken);
     }
 }

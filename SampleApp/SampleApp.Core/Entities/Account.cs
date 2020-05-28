@@ -13,7 +13,7 @@ namespace SampleApp.Core.Entities
         public decimal Sum { get; set; }
 
         [Required]
-        public AccountType AccountType { get; set; }
+        public AccountType Type { get; set; }
 
         public int ClientId { get; set; }
         public Client Client { get; set; }

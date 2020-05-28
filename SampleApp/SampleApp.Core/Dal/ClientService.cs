@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SampleApp.Core.Contract;
 using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.CustomExceptions;
 using SampleApp.Core.Dal.Contracts;
@@ -85,14 +84,14 @@ namespace SampleApp.Core.Dal
                     Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
                     {
                         Sum = ac.Sum,
-                        AccountType = ac.AccountType
+                        AccountType = ac.Type
                     }).ToList()
                 }).SingleOrDefaultAsync(cancellationToken);
 
             return clientWithAccountsModel;
         }
 
-        public async Task<QueryResult<ClientResponseModel>> GetClientGridAsync(string name, int? age, CancellationToken cancellationToken)
+        public async Task<QueryResult<ClientResponseModel>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -107,7 +106,7 @@ namespace SampleApp.Core.Dal
                     Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
                     {
                         Sum = ac.Sum,
-                        AccountType = ac.AccountType
+                        AccountType = ac.Type
                     }).ToList()
                 });
 
@@ -116,6 +115,7 @@ namespace SampleApp.Core.Dal
 
             var queryResult = new QueryResult<ClientResponseModel>
             {
+                Total = data.Count(),
                 Data = data
             };
 

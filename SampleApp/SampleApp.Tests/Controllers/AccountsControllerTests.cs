@@ -67,6 +67,20 @@ namespace SampleApp.Tests.Controllers
             Assert.IsInstanceOf(typeof(ActionResult), result);
             _mockMediator.Verify();
         }
+
+        [Test]
+        public async Task UpdateAcountAsync_Returns_BadRequest()
+        {
+            var requestModel = _fixture.Build<UpdateAccountRequestModel>()
+                .Without(x => x.Sum)
+                .Without(x => x.AccountType)
+                .Create();
+
+            var id = _fixture.Create<int>();
+            var result = await _accountsController.UpdateAccountAsync(id, requestModel, CToken);
+
+            Assert.IsInstanceOf(typeof(BadRequestObjectResult), result);
+        }
         #endregion
     }
 }

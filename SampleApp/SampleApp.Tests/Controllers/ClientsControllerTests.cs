@@ -6,7 +6,6 @@ using Microsoft.Extensions.Logging;
 using Moq;
 using NUnit.Framework;
 using SampleApp.Controllers;
-using SampleApp.Core.Contract;
 using SampleApp.Core.Contract.AccountsCommand;
 using SampleApp.Core.Dal.Contracts;
 using SampleApp.Core.Models.DTOs;
@@ -114,7 +113,7 @@ namespace SampleApp.Tests.Controllers
             var age = _fixture.Create<int>();
             var queryResult = _fixture.Create<QueryResult<ClientResponseModel>>();
 
-            _mockClientService.Setup(x => x.GetClientGridAsync(name, age, CToken)).ReturnsAsync(queryResult).Verifiable();
+            _mockClientService.Setup(x => x.GetClientsGridAsync(name, age, CToken)).ReturnsAsync(queryResult).Verifiable();
 
             var id = _fixture.Create<int>();
             var result = await _clientsController.GetClientsGridAsync(name, age, CToken);

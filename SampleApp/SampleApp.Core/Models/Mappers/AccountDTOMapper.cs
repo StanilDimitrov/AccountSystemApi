@@ -16,7 +16,7 @@ namespace SampleApp.Core.Models.Mappers
             {
                 AccountId = entity.AccountId,
                 Sum = entity.Sum,
-                AccountType = entity.AccountType,
+                AccountType = entity.Type,
                 ClientId = entity.ClientId
             };
         }
