@@ -38,7 +38,6 @@ namespace SampleApp.Core.Dal
 
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync(cancellationToken);
-            
             return account.ToDTO();
         }
 
@@ -67,11 +66,11 @@ namespace SampleApp.Core.Dal
 
         private void SetAccountProperties(Account account, UpdateAccountCommand command)
         {
-            if (command.Sum != null)
+            if (command.Sum.HasValue)
             {
                 if (account.Type == AccountType.Deposit)
                 {
-                    account.Sum += (decimal)command.Sum;
+                    account.Sum += command.Sum.Value;
 
                     if (account.Sum < 0)
                     {
@@ -80,13 +79,13 @@ namespace SampleApp.Core.Dal
                 }
                 else
                 {
-                    account.Sum += (decimal)command.Sum;
+                    account.Sum += command.Sum.Value;
                 }
             }
 
-            if (command.Type != null)
+            if (command.Type.HasValue)
             {
-                account.Type = (AccountType)command.Type;
+                account.Type = command.Type.Value;
             }
         }
     }

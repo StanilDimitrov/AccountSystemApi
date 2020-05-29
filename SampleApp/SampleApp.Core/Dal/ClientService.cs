@@ -122,7 +122,7 @@ namespace SampleApp.Core.Dal
 
         public async Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken)
         {
-            var client = await _context.Clients.SingleOrDefaultAsync(x => x.ClientId == clientId, cancellationToken);
+            var client = await _context.Clients.SingleOrDefaultAsync(cl => cl.ClientId == clientId, cancellationToken);
 
             if (client == null)
             {
@@ -134,12 +134,12 @@ namespace SampleApp.Core.Dal
 
         private void SetClientProperties(Client client, UpdateClientCommand command)
         {
-            if (command.Age != null)
+            if (command.Age.HasValue)
             {
-                client.Age = (int)command.Age;
+                client.Age = command.Age.Value;
             }
 
-            if (command.Gender != null)
+            if (command.Gender.HasValue)
             {
                 client.Gender = command.Gender;
             }

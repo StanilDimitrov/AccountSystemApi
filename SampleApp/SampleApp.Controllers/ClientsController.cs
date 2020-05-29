@@ -36,12 +36,7 @@ namespace SampleApp.Controllers
         [HttpPost]
         public async Task<ActionResult> CreateClientAsync(CreateClientRequestModel request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Call made to CreateUserAsync.");
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(request);
-            }
+            _logger.LogInformation("Call made to CreateClientAsync.");
 
             var command = request.ToCreateClientCommand();
             var clientId = await _mediator.Send(command, cancellationToken);
@@ -54,16 +49,11 @@ namespace SampleApp.Controllers
         [HttpPut("{id}")]
         public async Task<ActionResult> UpdateClientAsync(int id, UpdateClientRequestModel request, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Call made to UpdateUserAsync.");
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(request);
-            }
+            _logger.LogInformation("Call made to UpdateClientAsync.");
 
             if (!request.Age.HasValue && !request.Gender.HasValue)
             {
-                return BadRequest("Please enter at least one input parameter.");
+                return BadRequest("Please enter at least one valid parameter.");
             }
 
             var command = request.ToUpdateClientCommand(id);
@@ -76,7 +66,7 @@ namespace SampleApp.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult> DeleteClientAsync(int id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Call made to UpdateUserAsync.");
+            _logger.LogInformation("Call made to DeleteClientAsync.");
 
             var command = new DeleteClientCommand { ClientId = id };
             await _mediator.Send(command, cancellationToken);
@@ -88,7 +78,7 @@ namespace SampleApp.Controllers
         [HttpGet]
         public async Task<ActionResult<QueryResult<ClientResponseModel>>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Call made to GetUsersGridAsync.");
+            _logger.LogInformation("Call made to GetClientsGridAsync.");
 
            return await _clientService.GetClientsGridAsync(name, age, cancellationToken);
         }
@@ -97,7 +87,7 @@ namespace SampleApp.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<ClientResponseModel>> GetClientDetailsAsync(int id, CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Call made to GetUserDetailsAsync.");
+            _logger.LogInformation("Call made to GetClientDetailsAsync.");
 
             return await _clientService.GetClientDetailsAsync(id, cancellationToken);
         }
