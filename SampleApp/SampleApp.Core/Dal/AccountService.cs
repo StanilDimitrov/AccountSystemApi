@@ -46,14 +46,16 @@ namespace SampleApp.Core.Dal
             cancellationToken.ThrowIfCancellationRequested();
 
             var account = await GetAccountAsync(command.AccountId, cancellationToken);
-            SetAccountProperties(account, command);
 
+            SetAccountProperties(account, command);
             await _context.SaveChangesAsync(cancellationToken);
             return account.ToDTO();
         }
 
         private async Task<Account> GetAccountAsync(int accountId, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var account = await _context.Accounts.SingleOrDefaultAsync(x => x.AccountId == accountId, cancellationToken);
 
             if (account == null)

@@ -33,12 +33,11 @@ namespace SampleApp.Tests.Handlers.Accounts
         {
             var command = _fixture.Create<AddFundsToClientCommand>();
             var accountDTO = _fixture.Create<AccountDTO>();
-
             _mockAccountService.Setup(x => x.AddFundsToClientAsync(command, CToken)).ReturnsAsync(accountDTO).Verifiable();
 
             var result = await _addFundsToClientCommandHandler.Handle(command, CToken);
-            Assert.AreEqual(accountDTO.AccountId, result);
 
+            Assert.AreEqual(accountDTO.AccountId, result);
             _mockAccountService.Verify();
         }
     }

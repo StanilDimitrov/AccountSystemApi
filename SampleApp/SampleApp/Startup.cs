@@ -30,7 +30,6 @@ namespace SampleApp
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             var assembly = Assembly.Load("SampleApp.Controllers");
-
             services.AddControllers()
                 .PartManager.ApplicationParts.Add(new AssemblyPart(assembly));
 

@@ -22,10 +22,10 @@ namespace SampleApp.Tests.Controllers
         private Mock<ILogger<ClientsController>> _mockLogger;
         private Mock<IClientService> _mockClientService;
         private Mock<IMediator> _mockMediator;
+        private static ClientsController _clientsController;
         private static Fixture _fixture;
         private static readonly CancellationToken CToken = CancellationToken.None;
-        private static ClientsController _clientsController;
-
+     
         [SetUp]
         public void SetUp()
         {
@@ -45,7 +45,6 @@ namespace SampleApp.Tests.Controllers
 
             var requestModel = _fixture.Create<CreateClientRequestModel>();
             var result = await _clientsController.CreateClientAsync(requestModel, CToken);
-
             var objectResult = result as ObjectResult;
 
             Assert.AreEqual(StatusCodes.Status201Created, objectResult.StatusCode);
@@ -63,7 +62,6 @@ namespace SampleApp.Tests.Controllers
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateClientCommand>(), CToken)).ReturnsAsync(clientDTO).Verifiable();
             var id = _fixture.Create<int>();
             var result = await _clientsController.UpdateClientAsync(id, requestModel, CToken);
-
             var statusResult = result as StatusCodeResult;
 
             Assert.AreEqual(StatusCodes.Status200OK, statusResult.StatusCode);
@@ -96,7 +94,6 @@ namespace SampleApp.Tests.Controllers
 
             var id = _fixture.Create<int>();
             var result = await _clientsController.DeleteClientAsync(id, CToken);
-
             var statusResult = result as StatusCodeResult;
 
             Assert.AreEqual(StatusCodes.Status200OK, statusResult.StatusCode);

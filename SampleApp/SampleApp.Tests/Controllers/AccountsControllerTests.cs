@@ -18,10 +18,10 @@ namespace SampleApp.Tests.Controllers
     {
         private Mock<ILogger<AccountsController>> _mockLogger;
         private Mock<IMediator> _mockMediator;
+        private static AccountsController _accountsController;
         private static Fixture _fixture;
         private static readonly CancellationToken CToken = CancellationToken.None;
-        private static AccountsController _accountsController;
-
+        
         [SetUp]
         public void SetUp()
         {
@@ -39,12 +39,9 @@ namespace SampleApp.Tests.Controllers
             _mockMediator.Setup(x => x.Send(It.IsAny<AddFundsToClientCommand>(), CToken)).ReturnsAsync(accountId).Verifiable();
 
             var requestModel = _fixture.Create<AddFundsToAccountRequestModel>();
-            
-
             var result = await _accountsController.AddFundsToClinetAsync(accountId, requestModel, CToken);
 
             var objectResult = result as ObjectResult;
-
             Assert.AreEqual(StatusCodes.Status201Created, objectResult.StatusCode);
             _mockMediator.Verify();
         }
@@ -58,11 +55,9 @@ namespace SampleApp.Tests.Controllers
             _mockMediator.Setup(x => x.Send(It.IsAny<UpdateAccountCommand>(), CToken)).ReturnsAsync(accountDTO).Verifiable();
 
             var requestModel = _fixture.Create<UpdateAccountRequestModel>();
-
             var result = await _accountsController.UpdateAccountAsync(accountDTO.AccountId, requestModel, CToken);
 
             var objectResult = result as StatusCodeResult;
-
             Assert.AreEqual(StatusCodes.Status200OK, objectResult.StatusCode);
             Assert.IsInstanceOf(typeof(ActionResult), result);
             _mockMediator.Verify();

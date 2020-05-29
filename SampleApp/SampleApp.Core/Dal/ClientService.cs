@@ -20,7 +20,7 @@ namespace SampleApp.Core.Dal
     {
         private readonly AccountContext _context;
 
-        public ClientService (AccountContext context)
+        public ClientService(AccountContext context)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
         }
@@ -38,7 +38,6 @@ namespace SampleApp.Core.Dal
 
             _context.Clients.Add(client);
             await _context.SaveChangesAsync(cancellationToken);
-
             return client.ToDTO();
         }
 
@@ -50,7 +49,6 @@ namespace SampleApp.Core.Dal
 
             SetClientProperties(client, command);
             await _context.SaveChangesAsync(cancellationToken);
-
             return client.ToDTO();
         }
 
@@ -62,7 +60,6 @@ namespace SampleApp.Core.Dal
 
             _context.Clients.Remove(client);
             await _context.SaveChangesAsync(cancellationToken);
-
             return client.ToDTO();
         }
 
@@ -70,7 +67,7 @@ namespace SampleApp.Core.Dal
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            return await _context.Clients
+            var clientResponse = await _context.Clients
                 .Where(cl => cl.ClientId == clientId)
                 .Include(cl => cl.Accounts)
                 .Select(cl => new ClientResponseModel
@@ -80,12 +77,19 @@ namespace SampleApp.Core.Dal
                     Age = cl.Age,
                     Gender = cl.Gender,
                     Accounts = cl.Accounts.Select(ac => new AccountDetailsModel
-                    { 
+                    {
                         AccountId = ac.AccountId,
                         Sum = ac.Sum,
                         Type = ac.Type
                     }).ToList()
                 }).SingleOrDefaultAsync(cancellationToken);
+
+            if (clientResponse == null)
+            {
+                throw new NotFoundException($"Client with id: {clientId} does not exist.");
+            }
+
+            return clientResponse;
         }
 
         public async Task<QueryResult<ClientResponseModel>> GetClientsGridAsync(string name, int? age, CancellationToken cancellationToken)
@@ -110,10 +114,11 @@ namespace SampleApp.Core.Dal
 
             clientsQuery = ApplyFilters(name, age, clientsQuery);
             var data = await clientsQuery.ToListAsync(cancellationToken);
+            var total = await clientsQuery.CountAsync(cancellationToken);
 
             var queryResult = new QueryResult<ClientResponseModel>
             {
-                Total = data.Count(),
+                Total = total,
                 Data = data
             };
 
@@ -122,6 +127,8 @@ namespace SampleApp.Core.Dal
 
         public async Task<Client> GetClientAsync(int clientId, CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             var client = await _context.Clients.SingleOrDefaultAsync(cl => cl.ClientId == clientId, cancellationToken);
 
             if (client == null)

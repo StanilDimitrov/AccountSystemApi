@@ -43,10 +43,9 @@ namespace SampleApp.Controllers
         {
             _logger.LogInformation("Call made to UpdateAccountAsync.");
 
-
             if (!request.Sum.HasValue && !request.Type.HasValue)
             {
-                return BadRequest("Please enter at least one input parameter.");
+                return BadRequest("Please enter at least one valid parameter.");
             }
 
             var command = request.ToUpdateAccountCommand(id);

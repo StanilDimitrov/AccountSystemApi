@@ -15,10 +15,10 @@ namespace SampleApp.Tests.Clients.Handlers
     {
         private Mock<ILogger<CreateClientCommandHandler>> _mockLogger;
         private Mock<IClientService> _mockClientService;
+        private static CreateClientCommandHandler _createClientCommandHandler;
         private static Fixture _fixture;
         private static readonly CancellationToken CToken = CancellationToken.None;
-        private static CreateClientCommandHandler _createClientCommandHandler;
-
+        
         [SetUp]
         public void SetUp()
         {
@@ -33,12 +33,11 @@ namespace SampleApp.Tests.Clients.Handlers
         {
             var command = _fixture.Create<CreateClientCommand>();
             var clientDTO = _fixture.Create<ClientDTO>();
-
             _mockClientService.Setup(x => x.CreateClientAsync(command, CToken)).ReturnsAsync(clientDTO).Verifiable();
 
             var result = await _createClientCommandHandler.Handle(command, CToken);
-            Assert.AreEqual(clientDTO.ClientId, result);
 
+            Assert.AreEqual(clientDTO.ClientId, result);
             _mockClientService.Verify();
         }
     }
